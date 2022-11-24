@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    jest: true,
   },
   extends: 'airbnb-base',
   overrides: [
@@ -12,5 +13,7 @@ module.exports = {
   },
   rules: {
     'no-console': 'off',
+    'linebreak-style': 'off',
+    'no-useless-return': 'warn',
   },
 };
