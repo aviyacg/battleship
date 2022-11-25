@@ -37,14 +37,16 @@ export default class Gameboard {
     // validate coordinates
     if (x < 0 || x >= this.gridSize
       || y < 0 || y >= this.gridSize) {
-      return false;
+      return undefined;
     }
 
     // check if attack hit a ship
     let isHit = false;
     this.ships.forEach((ship) => {
-      if (ship.coordinates.includes({ x, y })) {
-        ship.hit();
+      if (ship.coordinates.some(
+        (coordinate) => JSON.stringify(coordinate) === JSON.stringify({ x, y }),
+      )) {
+        ship.ship.hit();
         isHit = true;
       }
     });
