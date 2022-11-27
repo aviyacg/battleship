@@ -63,7 +63,7 @@ export default class Gameboard {
     if (this.missedAttacks.concat(this.hits).some(
       (coordinate) => JSON.stringify(coordinate) === JSON.stringify({ x, y }),
     )) {
-      return false;
+      return undefined;
     }
 
     // check if attack hit a ship & push coordinate to the right list

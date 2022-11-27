@@ -36,8 +36,18 @@ export function newGame() {
 }
 
 export function getComputerMove(player) {
-  let coordinate = getRandomCoordinate(player.gridSize);
-  while (player.recieveAttack(coordinate.x, coordinate.y) === undefined) {
-    coordinate = getRandomCoordinate(player.gridSize);
+  // find a square adjacent to a hit
+  const foundSquare = player.hits.find((coordinate) => {
+    console.log(coordinate);
+    const { x, y } = coordinate;
+    const adjacentSquares = [{ x, y: y - 1 }, { x, y: y + 1 }, { x: x + 1, y }, { x: x - 1, y }];
+    return adjacentSquares.find((square) => player.recieveAttack(square.x, square.y) !== undefined);
+  });
+  // pick random square
+  if (foundSquare === undefined) {
+    let coordinate = getRandomCoordinate(player.gridSize);
+    while (player.recieveAttack(coordinate.x, coordinate.y) === undefined) {
+      coordinate = getRandomCoordinate(player.gridSize);
+    }
   }
 }
