@@ -11,7 +11,7 @@ function getRandomBool() {
   return n > 50;
 }
 
-export default function newGame() {
+export function newGame() {
   // create player board
   const player = new Gameboard(15);
   // place 5 ships on the board
@@ -33,4 +33,11 @@ export default function newGame() {
   }
 
   return { player, computer };
+}
+
+export function getComputerMove(player) {
+  let coordinate = getRandomCoordinate(player.gridSize);
+  while (player.recieveAttack(coordinate.x, coordinate.y) === undefined) {
+    coordinate = getRandomCoordinate(player.gridSize);
+  }
 }
