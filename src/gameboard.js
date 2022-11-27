@@ -8,6 +8,19 @@ export default class Gameboard {
     this.gridSize = gridSize;
   }
 
+  /**
+   * Get a ship by coordinates
+   * @param {number} x x coordinate
+   * @param {number} y y coordinate
+   * @returns the ship that occupies the coordinate otherwise return undefined
+   */
+  getShip(x, y) {
+    const foundShip = this.ships.find((ship) => ship.coordinates.some(
+      (coordinate) => JSON.stringify(coordinate) === JSON.stringify({ x, y }),
+    ));
+    return foundShip ? foundShip.ship : undefined;
+  }
+
   placeShip(x, y, length, vertical = false) {
     // validate ship location
     if (x < 0 || x >= this.gridSize
@@ -22,11 +35,17 @@ export default class Gameboard {
     const ship = new Ship(length);
     const coordinates = [];
     for (let i = 0; i < length; i += 1) {
+      let coordinate;
       if (vertical) {
-        coordinates.push({ x, y: y + i });
+        coordinate = { x, y: y + i };
       } else {
-        coordinates.push({ x: x + i, y });
+        coordinate = { x: x + i, y };
       }
+      // check if coordinate is occupied by another ship
+      if (this.getShip(coordinate.x, coordinate.y)) {
+        return false;
+      }
+      coordinates.push(coordinate);
     }
     // append to list
     this.ships.push({ ship, coordinates });
@@ -40,25 +59,22 @@ export default class Gameboard {
       return undefined;
     }
 
-    // check if attack hit a ship
-    let isHit = false;
-    this.ships.forEach((ship) => {
-      if (ship.coordinates.some(
-        (coordinate) => JSON.stringify(coordinate) === JSON.stringify({ x, y }),
-      )) {
-        ship.ship.hit();
-        isHit = true;
-      }
-    });
-
-    // push coordinates to the right list
-    if (isHit) {
-      this.hits.push({ x, y });
-    } else {
-      this.missedAttacks.push({ x, y });
+    // check if coordinate was attacked before
+    if (this.missedAttacks.concat(this.hits).some(
+      (coordinate) => JSON.stringify(coordinate) === JSON.stringify({ x, y }),
+    )) {
+      return false;
     }
 
-    return isHit;
+    // check if attack hit a ship & push coordinate to the right list
+    const attackedShip = this.getShip(x, y);
+    if (attackedShip) {
+      attackedShip.hit();
+      this.hits.push({ x, y });
+      return true;
+    }
+    this.missedAttacks.push({ x, y });
+    return false;
   }
 
   isAllSunk() {

@@ -79,6 +79,13 @@ test('recieveAttack push coordinates to the missed list when missing', () => {
   expect(gameboard.missedAttacks).toContainEqual({ x: 2, y: 2 });
 });
 
+test('recieveAttack return false when attacing the same coordinate', () => {
+  const gameboard = new Gameboard();
+  gameboard.placeShip(0, 0, 4);
+  gameboard.recieveAttack(0, 0);
+  expect(gameboard.recieveAttack(0, 0)).toBeFalsy();
+});
+
 test('isAllSunk return true when all ships sunk', () => {
   const gameboard = new Gameboard();
   gameboard.placeShip(3, 3, 2);
