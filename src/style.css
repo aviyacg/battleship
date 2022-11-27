@@ -1,0 +1,62 @@
+:root{
+  --red: red;
+  --green: green;
+  --blue: blue;
+  --grey: grey;
+}
+
+
+body{
+  margin: 0;
+  padding: 0;
+}
+
+#root{
+  min-height: 100vh;
+  background-color: #111;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.attack-board,
+.defence-board{
+  height: 45vh;
+  width: 45vh;
+
+  border: 2px solid var(--green);
+
+  display: grid;
+  grid-template: repeat(15, auto) / repeat(15, auto);
+}
+
+.square{
+  border: 1px solid var(--green);
+  box-sizing: border-box;
+  height: 3vh;
+  width: 3vh;
+}
+
+.ship{
+  background-color: var(--blue);
+}
+
+.missed-attack{
+  background-color: var(--grey);
+}
+
+.hit{
+  background-color: var(--red);
+}
+
+button{
+  background-color: var(--grey);
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  padding: 8px;
+}
+
