@@ -15,5 +15,6 @@ module.exports = {
     'no-console': 'off',
     'linebreak-style': 'off',
     'no-useless-return': 'warn',
+    radix: 'off',
   },
 };
